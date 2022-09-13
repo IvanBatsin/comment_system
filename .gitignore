@@ -5,3 +5,4 @@ server/.env
 client/.env
 
 server/info.txt
+server/rest.http

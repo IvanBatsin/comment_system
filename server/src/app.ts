@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import cors from 'cors';
 import { PrismaClient }  from '@prisma/client';
-import { ApplicationRoutes, ServerResponse } from '../../types';
+import { ApplicationRoutes, ServerResponse } from '../../client/src/types';
 import { PostsController, postsControllerInstance } from './controllers/Posts';
 
 dotenv.config({path: path.join(__dirname, '../', '.env')});
@@ -11,11 +11,15 @@ dotenv.config({path: path.join(__dirname, '../', '.env')});
 const app: Application = express();
 const prismaClient = new PrismaClient();
 
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_URL
+}));
 app.use(express.json());
-app.use(cors());
 
 PostsController.setPrismaClient(prismaClient);
 
+app.use(`${ApplicationRoutes.POSTS}/:id`, postsControllerInstance.getPostById);
 app.use(ApplicationRoutes.POSTS, postsControllerInstance.allPosts);
 
 // Global Error Handler

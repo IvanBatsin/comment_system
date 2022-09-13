@@ -1,8 +1,10 @@
+import { IPost, ServerResponse } from "../types";
 import { makeRequest } from "./makeRequest";
-import { ApplicationRoutes } from '../../../types';
+
+export type GetAllPostsData = Pick<IPost, 'title' | 'id'>
 
 export class PostsService {
-  static getAllPosts = (): Promise<void> => {
-    return makeRequest(ApplicationRoutes.POSTS);
+  static getAllPosts = (): Promise<ServerResponse<GetAllPostsData[]>> => {
+    return makeRequest<GetAllPostsData[]>('/posts');
   }
 }

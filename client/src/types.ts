@@ -43,7 +43,8 @@ export enum ServerErrorMessages {
   SERVER_ERROR = 'Server error',
   UNHANDLE_METHOD = 'Unhandle method',
   METHOD_NOT_ALLOWED = 'Method not allowed',
-  PRISMA_IS_NOT_DEFINED = 'Prisma is not defined'
+  PRISMA_IS_NOT_DEFINED = 'Prisma is not defined',
+  RESOURCE_NOT_FOUND = 'Resource not found'
 }
 
 export enum ApplicationRoutes {
