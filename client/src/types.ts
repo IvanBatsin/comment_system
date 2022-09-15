@@ -27,8 +27,10 @@ export interface IComment {
   postId: string,
   parent?: IComment,
   children: IComment[],
-  parentId?: string
-  likes: ILike[]
+  parentId?: string,
+  likes: ILike[],
+  user: IUser,
+  post: IPost
 }
 
 export interface ILike {
@@ -50,3 +52,5 @@ export enum ServerErrorMessages {
 export enum ApplicationRoutes {
   POSTS = '/posts'
 }
+
+export const RootCommentType = 'root';

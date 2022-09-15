@@ -6,3 +6,5 @@ client/.env
 
 server/info.txt
 server/rest.http
+
+node_modules
