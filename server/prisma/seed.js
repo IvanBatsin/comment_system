@@ -33,6 +33,7 @@ async function seed() {
 
     const comment2 = await prisma.comment.create({
       data: {
+        parentId: comment1.id,
         message: 'Message text from second comment',
         postId: post1.id,
         userId: mike.id
@@ -42,7 +43,7 @@ async function seed() {
     const comment3 = await prisma.comment.create({
       data: {
         message: 'Message text from third comment',
-        postId: post2.id,
+        postId: post1.id,
         userId: ivan.id
       }
     });

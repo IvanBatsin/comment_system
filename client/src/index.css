@@ -136,6 +136,9 @@ button {
 .btn:focus-visible {
   --color: hsl(var(--hue), 100%, 74%);
 }
+.btn[disabled] {
+  --color: hsl(var(--hue), 20%, 74%);
+}
 
 .btn.icon-btn {
   background: none;

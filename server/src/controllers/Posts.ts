@@ -76,6 +76,14 @@ export class PostsController {
       return next(JSON.stringify(error));
     }
   }
+
+  async createComment(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.send();
+    } catch (error) {
+      return next(JSON.stringify(error));
+    }
+  }
 }
 
 export const postsControllerInstance = new PostsController();

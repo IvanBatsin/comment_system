@@ -9,5 +9,5 @@ const api = axios.create({
 export const makeRequest = <T>(url: string, options?: AxiosRequestConfig): Promise<ServerResponse<T>> => {
   return api(url, options)
     .then(res => res.data)
-    .catch(error => Promise.reject(error?.response?.data?.messagev || 'Custom error message that must be rewrite'));
+    .catch(error => Promise.reject(error?.response?.data?.message || 'Custom error message that must be rewrite'));
 }

@@ -1,22 +1,22 @@
 import React from 'react';
 
-interface IUseAsyncInternal<T> {
+interface IUseAsyncInternal<T, U = any> {
   loading: boolean,
   error: any,
   value: T | undefined,
-  execute: (params?: any[]) => Promise<T>
+  execute: (params?: U) => Promise<T>
 }
 
 type IUseAsync<T> = Pick<IUseAsyncInternal<T>, 'error' | 'loading' | 'value'>
 
-const useAsyncInternal = <T>(func: (params?: any) => Promise<T>, dependencies: any[] = [], initialLoadidng: boolean = false): IUseAsyncInternal<T> => {
+const useAsyncInternal = <T, U = any>(func: (params?: any) => Promise<T>, dependencies: any[] = [], initialLoadidng: boolean = false): IUseAsyncInternal<T, U> => {
   const [loading, setLoading] = React.useState<boolean>(initialLoadidng);
   const [error, setError] = React.useState<string>();
   const [value, setValue] = React.useState<T>();
 
-  const execute = React.useCallback((...params: any[]) => {
+  const execute = React.useCallback((...params: any) => {
     setLoading(true);
-    return func(params)
+    return func(...params)
       .then(data => {
         setError(undefined);
         setValue(data);
@@ -43,6 +43,6 @@ export const useAsync = <T>(func: () => Promise<T>, dependencies: any[] = []): I
   return state;
 }
 
-export const useAsyncFn = <T>(func: () => Promise<T>, dependencies: any[] = []): IUseAsyncInternal<T> => {
-  return useAsyncInternal(func, dependencies, false);
+export const useAsyncFn = <T, U>(func: (params: U) => Promise<T>, dependencies: any[] = []): IUseAsyncInternal<T, U> => {
+  return useAsyncInternal<T, U>(func, dependencies, false);
 }

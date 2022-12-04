@@ -19,8 +19,9 @@ app.use(express.json());
 
 PostsController.setPrismaClient(prismaClient);
 
-app.use(`${ApplicationRoutes.POSTS}/:id`, postsControllerInstance.getPostById);
-app.use(ApplicationRoutes.POSTS, postsControllerInstance.allPosts);
+app.post(`${ApplicationRoutes.POSTS}/:id/comments`, postsControllerInstance.createComment);
+app.get(`${ApplicationRoutes.POSTS}/:id`, postsControllerInstance.getPostById);
+app.get(ApplicationRoutes.POSTS, postsControllerInstance.allPosts);
 
 // Global Error Handler
 app.use((error: any, req: Request, res: Response<ServerResponse<any>>, next: NextFunction) => {
@@ -28,5 +29,5 @@ app.use((error: any, req: Request, res: Response<ServerResponse<any>>, next: Nex
 });
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log('application is running');
+  console.log(`application is running at ${process.env.PORT || 5000}`);
 });

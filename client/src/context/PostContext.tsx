@@ -7,7 +7,7 @@ import { IComment, RootCommentType } from '../types';
 interface ContextParams {
   postObj: {id: string, post: GetPostByIdData},
   rootComments: IComment[],
-  getReplies: (parentId: string) => IComment[]
+  getReplies: (parentId: string) => IComment[] | undefined
 }
 
 interface CommentsGroup {
@@ -34,7 +34,7 @@ export const PostsProvider: React.FC<{children: React.ReactNode}> = ({children})
     return group;
   }, [serverRespose?.data?.comments]);
 
-  const getReplies = (parentId: string): IComment[] => {
+  const getReplies = (parentId: string): IComment[] | undefined => {
     return commentsByParentId[parentId];
   }
 
