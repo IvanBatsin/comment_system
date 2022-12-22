@@ -2,22 +2,21 @@ import React from 'react';
 import { usePostsContext } from '../context/PostContext';
 import { useAsyncFn } from '../hooks/useAsync';
 import { CommentsCreatePayload, CommentsService } from '../services/commentsService';
-import { ServerResponse } from '../types';
+import { IComment, ServerResponse } from '../types';
 import { CommentForm } from './CommentForm';
 import { CommentList } from './CommentList';
 
 export const PostItem: React.FC = () => {
-  const { postObj, rootComments } = usePostsContext();
-  const { error, loading, execute: createCommentFn } = useAsyncFn<ServerResponse<any>, CommentsCreatePayload>(CommentsService.createComment);
+  const { postObj, rootComments, createCommentLocaly } = usePostsContext();
+  const { error, loading, execute: createCommentFn } = useAsyncFn<ServerResponse<IComment>, CommentsCreatePayload>(CommentsService.createComment);
 
-  const handleSubmit = async (message: string): Promise<ServerResponse<any>> => {
+  const handleSubmit = async (message: string): Promise<any> => {
     try {
       const comment = await createCommentFn({message, postId: postObj.id});
-      console.log(comment);
+      createCommentLocaly(comment.data!);
     } catch (error) {
       console.log(error);
     }
-    return {success: true};
   }
   
   return (

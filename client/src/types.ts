@@ -54,3 +54,7 @@ export enum ApplicationRoutes {
 }
 
 export const RootCommentType = 'root';
+
+export enum ApplicationCookies {
+  USER_ID = 'userId'
+}

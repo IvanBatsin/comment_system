@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { Response, Request, NextFunction } from 'express';
-import { IPost, ServerErrorMessages, ServerResponse } from '../../../client/src/types';
+import { ApplicationCookies, IPost, ServerErrorMessages, ServerResponse } from '../../../client/src/types';
 
 type ReturnPosts = Pick<IPost, 'id' | 'title'>;
-type ReturnPostById = Pick<IPost, 'body' | 'title'>
+type ReturnPostById = Pick<IPost, 'body' | 'title'>;
 
 export class PostsController {
   static prismaClient: PrismaClient;
@@ -77,9 +77,34 @@ export class PostsController {
     }
   }
 
-  async createComment(req: Request, res: Response, next: NextFunction) {
+  async createComment(req: Request, res: Response<ServerResponse<any>>, next: NextFunction) {
     try {
-      res.send();
+      if (!req.body.message) {
+        return res.status(405).json({success: false, message: ServerErrorMessages.METHOD_NOT_ALLOWED});
+      }
+
+      const createdComment = await PostsController.prismaClient.comment.create({
+        data: {
+          message: req.body.message,
+          postId: req.params.id,
+          userId: req.cookies[ApplicationCookies.USER_ID],
+          parentId: req.body.parentId
+        },
+        select: {
+          id: true,
+          parentId: true,
+          message: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      });
+
+      res.status(200).json({success: true, data: createdComment});
     } catch (error) {
       return next(JSON.stringify(error));
     }
