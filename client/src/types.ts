@@ -30,7 +30,9 @@ export interface IComment {
   parentId?: string,
   likes: ILike[],
   user: IUser,
-  post: IPost
+  post: IPost,
+  likesCount: number,
+  likedByMe?: boolean 
 }
 
 export interface ILike {
@@ -46,11 +48,14 @@ export enum ServerErrorMessages {
   UNHANDLE_METHOD = 'Unhandle method',
   METHOD_NOT_ALLOWED = 'Method not allowed',
   PRISMA_IS_NOT_DEFINED = 'Prisma is not defined',
-  RESOURCE_NOT_FOUND = 'Resource not found'
+  RESOURCE_NOT_FOUND = 'Resource not found',
+  BAD_REQUEST = 'Bad request',
+  UNAUTHORIZED = 'Unathorized'
 }
 
 export enum ApplicationRoutes {
-  POSTS = '/posts'
+  POSTS = '/posts',
+  COMMENTS = '/comments'
 }
 
 export const RootCommentType = 'root';

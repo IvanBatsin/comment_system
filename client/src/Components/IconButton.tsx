@@ -5,16 +5,19 @@ interface IconButtonProps {
   isActive?: boolean,
   color?: string,
   children?: React.ReactNode,
+  count?: number,
+  disabled?: boolean,
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
  
-export const IconButton: React.FC<IconButtonProps> = ({color, Icon, isActive, children, onClick}) => {
+export const IconButton: React.FC<IconButtonProps> = ({color, Icon, isActive, children, count, disabled, onClick}) => {
   return (
-    <button className={`btn icon-btn ${isActive ? 'icon-btn-active' : ''} ${color || ''}`} onClick={onClick}>
-      <span className={`${children ? 'mr-1' : ''}`}>
+    <button className={`btn icon-btn ${isActive ? 'icon-btn-active' : ''} ${color || ''}`.trim()} onClick={onClick} disabled={!!disabled}>
+      <span className={`${count ? 'mr-1' : ''}`.trim()}>
         <Icon/>
       </span>
-      {children}
+      {count ? count : null}
+      {/* {children} */}
     </button>
   )
 }

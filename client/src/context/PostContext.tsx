@@ -7,8 +7,11 @@ import { IComment, RootCommentType } from '../types';
 interface ContextParams {
   postObj: {id: string, post: GetPostByIdData},
   rootComments: IComment[],
-  createCommentLocaly: (comment: IComment) => void,
-  getReplies: (parentId: string) => IComment[] | undefined
+  createCommentLocally: (comment: IComment) => void,
+  getReplies: (parentId: string) => IComment[] | undefined,
+  updateCommentLocally: (commentId: string, message: string) => void,
+  deleteCommentLocally: (commentId: string) => void,
+  toggleLikeLocally: (commentId: string, addLke: boolean) => void
 }
 
 interface CommentsGroup {
@@ -38,8 +41,28 @@ export const PostsProvider: React.FC<{children: React.ReactNode}> = ({children})
     return commentsByParentId[parentId];
   }
 
-  const createCommentLocaly = (comment: IComment): void => {
+  const createCommentLocally = (comment: IComment): void => {
     setComments(prevComments => [comment, ...prevComments]);
+  }
+
+  const updateCommentLocally = (commentId: string, message: string): void => {
+    setComments(prevComments => prevComments.map(comment => comment.id === commentId ? {...comment, message} : comment));
+  }
+
+  const deleteCommentLocally = (commentId: string): void => {
+    setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+  }
+
+  const toggleLikeLocally = (commentId: string, addLike: boolean): void => {
+    setComments(prevComments => prevComments.map(comment => {
+      if (comment.id === commentId) {
+        addLike ? 
+        comment = {...comment, likedByMe: true, likesCount: comment.likesCount + 1} : 
+        comment = {...comment, likedByMe: false, likesCount: comment.likesCount - 1}
+      }
+
+      return comment;
+    }));
   }
 
   React.useEffect(() => {
@@ -52,8 +75,11 @@ export const PostsProvider: React.FC<{children: React.ReactNode}> = ({children})
     <Context.Provider value={{
         postObj: {id: id!, post: serverRespose?.data!}, 
         rootComments: commentsByParentId[RootCommentType],
-        createCommentLocaly,
-        getReplies
+        createCommentLocally,
+        getReplies,
+        updateCommentLocally,
+        deleteCommentLocally,
+        toggleLikeLocally
       }}>
       {loading ? <h2>Loading...</h2> : error ? <h1 className='error-msg'>{error}</h1> : children}
     </Context.Provider>

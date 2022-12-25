@@ -7,13 +7,13 @@ import { CommentForm } from './CommentForm';
 import { CommentList } from './CommentList';
 
 export const PostItem: React.FC = () => {
-  const { postObj, rootComments, createCommentLocaly } = usePostsContext();
+  const { postObj, rootComments, createCommentLocally } = usePostsContext();
   const { error, loading, execute: createCommentFn } = useAsyncFn<ServerResponse<IComment>, CommentsCreatePayload>(CommentsService.createComment);
 
   const handleSubmit = async (message: string): Promise<any> => {
     try {
       const comment = await createCommentFn({message, postId: postObj.id});
-      createCommentLocaly(comment.data!);
+      createCommentLocally(comment.data!);
     } catch (error) {
       console.log(error);
     }
